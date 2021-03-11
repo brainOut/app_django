@@ -19,6 +19,7 @@
 
     <!-- Custom styles for this template-->
     <link href="/static/css/sb-admin-2.min.css" rel="stylesheet">
+    {% block custom_css %}{% endblock %}
 
 </head>
 
@@ -43,7 +44,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="{% url 'projects' %}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Projects</span></a>
             </li>
@@ -208,7 +209,7 @@
 
     <!-- Custom scripts for all pages-->
     <script src="/static/js/sb-admin-2.min.js"></script>
-
+    {% block custom_js %}{% endblock %}
 </body>
 
 </html>

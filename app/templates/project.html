@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block title %} Project {% endblock %}
+
+{% block content %}
+    <h1 class="h3 mb-4 text-gray-800">Project {{ object.name }}</h1>
+    <div class="row">
+        <div class="col-lg-6">
+            <h1>{{ object.headline }}</h1>
+            <p><label style="min-width: 100px">Name :</label>{{ object.name }}</p>
+            <p><label style="min-width: 100px">Token :</label>{{ object.token }}</p>
+            <p><label style="min-width: 100px">Url :</label> {{ object.url }}</p>
+        </div>
+    </div>
+{% endblock %}

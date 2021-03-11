@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+
+{% block title %} Projects {% endblock %}
+
+{% block custom_css %}
+    <script src="/static/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css"></script>
+{% endblock %}
+
+{% block content %}
+    <h1 class="h3 mb-4 text-gray-800">Projects</h1>
+    <div class="row">
+        <div class="col text-center">
+            <table id="projects" class="table table-striped table-bordered table-hover">
+                {% if object_list %}
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Token</th>
+                        <th>Url</th>
+                    </tr>
+                </thead>
+                {% endif %}
+                <tbody>
+                    {% for project in object_list %}
+                        <tr>
+                            <td><a href="{% url 'project' project.slug %}">{{ project.name }}</a></td>
+                            <td>{{ project.token }}</td>
+                            <td>{{ project.url }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>No Projects yet.</tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block custom_js %}
+<script src="/static/vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="/static/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+<script class="init" type="text/javascript">
+    $(document).ready(function() {
+        $('#projects').DataTable();
+    });
+</script>
+{% endblock %}
