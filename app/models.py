@@ -13,7 +13,8 @@ ATTRIBUTES = (
     )),
     ("Brute Force", (
         ('url', 'URL'),
-        ('filename', 'File Name')
+        ('filename', 'File Name'),
+        ('target', 'Success Pattern')
     ))
 )
 
