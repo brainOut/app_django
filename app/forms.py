@@ -1,6 +1,7 @@
 from django import forms
 from hashlib import sha256
 from django.conf.global_settings import SECRET_KEY
+from .models import PenTest
 
 
 class ProjectForm(forms.Form):
@@ -11,3 +12,9 @@ class ProjectForm(forms.Form):
 
     def hash_token(self):
         self.cleaned_data["token"] = sha256(f"{self.cleaned_data['token'] + SECRET_KEY}".encode()).hexdigest()
+
+
+class PenTestForm(forms.ModelForm):
+    class Meta:
+        model = PenTest
+        fields = ('entity', 'attr', 'value')

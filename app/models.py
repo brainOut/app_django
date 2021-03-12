@@ -1,6 +1,22 @@
 from django.db import models
 from django.urls import reverse
 
+ENTITIES = (
+    ('brute_forcer', 'Brute Force'),
+    ('fuzz', 'Fuzzing'),
+)
+
+ATTRIBUTES = (
+    ("Fuzzing", (
+        ('url', 'URL'),
+        ('port', 'PORT')
+    )),
+    ("Brute Force", (
+        ('url', 'URL'),
+        ('filename', 'File Name')
+    ))
+)
+
 
 # Create your models here.
 class Project(models.Model):
@@ -14,3 +30,20 @@ class Project(models.Model):
 
     def get_absolute_url(self):
         return reverse('project', kwargs={'slug': self.slug})
+
+
+class PenTest(models.Model):
+    entity = models.CharField(
+       max_length=50,
+       choices=ENTITIES,
+   )
+    attr = models.CharField(
+       max_length=50,
+       choices=ATTRIBUTES,
+   )
+    value = models.CharField(max_length=100)
+    project = models.ForeignKey(
+        Project,
+        on_delete=models.CASCADE,
+        related_name="tests"
+    )

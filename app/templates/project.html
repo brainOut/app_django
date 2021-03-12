@@ -2,14 +2,78 @@
 
 {% block title %} Project {% endblock %}
 
+{% block custom_css %}
+    <script src="/static/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css"></script>
+{% endblock %}
+
 {% block content %}
-    <h1 class="h3 mb-4 text-gray-800">Project {{ object.name }}</h1>
+    <h1 class="h3 mb-4 text-gray-800">Project {{ project.name }}</h1>
     <div class="row">
         <div class="col-lg-6">
-            <h1>{{ object.headline }}</h1>
-            <p><label style="min-width: 100px">Name :</label>{{ object.name }}</p>
-            <p><label style="min-width: 100px">Token :</label>{{ object.token }}</p>
-            <p><label style="min-width: 100px">Url :</label> {{ object.url }}</p>
+            <p><label style="min-width: 100px">Name :</label>{{ project.name }}</p>
+            <p><label style="min-width: 100px">Token :</label>{{ project.token }}</p>
+            <p><label style="min-width: 100px">Url :</label> {{ project.url }}</p>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col text-center">
+            <table id="tests" class="table table-striped table-bordered table-hover">
+                {% if tests %}
+                <thead>
+                    <tr>
+                        <th>PenTest Type</th>
+                        <th>Attribute</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                {% endif %}
+                <tbody>
+                    {% for test in tests %}
+                        <tr>
+                            <td>{{ test.entity }}</td>
+                            <td>{{ test.attr }}</td>
+                            <td>{{ test.value }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>No tests yet.</tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <form action="{% url 'project' project.slug %}" method="post">{% csrf_token %}
+                {{ test_form.non_field_errors }}
+                <div class="fieldWrapper">
+                    {{ test_form.entity.errors }}
+                    <label for="{{ test_form.entity.id_for_label }}" style="min-width: 100px">PenTest Type :</label>
+                    {{ test_form.entity }}
+                </div>
+                <div class="fieldWrapper">
+                    {{ test_form.attr.errors }}
+                    <label for="{{ test_form.attr.id_for_label }}" style="min-width: 100px">Attribute :</label>
+                    {{ test_form.attr }}
+                </div>
+                <div class="fieldWrapper">
+                    {{ test_form.value.errors }}
+                    <label for="{{ test_form.value.id_for_label }}" style="min-width: 100px">Value :</label>
+                    {{ test_form.value }}
+                </div>
+                <br/>
+                <button type="submit" class="btn btn-primary btn-lg btn-block"> Submit </button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block custom_js %}
+<script src="/static/vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="/static/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+<script class="init" type="text/javascript">
+    $(document).ready(function() {
+        $('#tests').DataTable();
+    });
+</script>
 {% endblock %}

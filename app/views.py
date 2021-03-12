@@ -1,10 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.views.generic.edit import FormView
+from django.views.generic.edit import FormView, UpdateView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-from .forms import ProjectForm
+from .forms import ProjectForm, PenTestForm
 from .models import Project
 
 # Create your views here.
@@ -56,6 +56,28 @@ class ListProjectView(ListView):
 class DetailProjectView(DetailView):
     template_name = 'project.html'
     model = Project
+
+
+@login_required
+def project_details(request, slug):
+    project = get_object_or_404(Project, slug=slug)
+    tests = project.tests.all()
+    new_test = None
+
+    if request.method == "POST":
+        test_form = PenTestForm(data=request.POST)
+        if test_form.is_valid():
+            new_test = test_form.save(commit=False)
+            new_test.project = project
+            new_test.save()
+
+    test_form = PenTestForm()
+    return render(request, "project.html", {
+        'project': project,
+        'tests': tests,
+        'new_test': new_test,
+        'test_form': test_form
+    })
 
 
 
